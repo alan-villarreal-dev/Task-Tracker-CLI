@@ -1,10 +1,10 @@
 package service;
 import model.Status;
 import model.Task;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TaskService {
     private List<Task> taskList = new ArrayList<>();
@@ -17,7 +17,16 @@ public class TaskService {
         }
     }
 
-    public void updateTask(int id, Task task, String newDescription) {
+
+    // Create a task and add it to the list
+    public void createTask(String description) {
+        Task taskToCreate = new Task(description);
+        taskToCreate.setId(taskList.size() + 1);
+        taskToCreate.setStatus(Status.TODO);
+        addTask(taskToCreate);
+    }
+
+    public void updateTask(int id, String newDescription) {
 
         // Task list empty
         if (taskList.isEmpty()) {
@@ -25,7 +34,7 @@ public class TaskService {
         }
 
         // Verify if the task exists
-        if (taskList.contains(task)) {
+        if (taskList.contains(id)) {
             Task taskToUpdate = taskList.get(id);
             taskToUpdate.setDescription(newDescription);
 
@@ -86,13 +95,44 @@ public class TaskService {
     }
 
     // Listing all tasks
-    public void listAllTasks() {
+    public void showTasks(Optional<Status> status) {
 
         if (taskList.isEmpty()) {
             System.out.println("Task list is empty, add a task please");
-        } else {
+        }
+
+        // Show all
+        if(!(status.isPresent())) {
             for (Task task : taskList) {
                 System.out.println(task);
+            }
+        }
+
+        // Show tasks only with done status
+        if(status.isPresent() == status.equals(Status.DONE)) {
+            for (Task task : taskList) {
+                if(task.getStatus() == Status.DONE) {
+                    System.out.println(task);
+                }
+            }
+        }
+
+        // Show tasks with in progress status
+        if(status.isPresent() == status.equals(Status.IN_PROGRESS)) {
+            for (Task task : taskList) {
+                if(task.getStatus() == Status.IN_PROGRESS) {
+                    System.out.println(task);
+                }
+            }
+        }
+
+        // Show tasks with todo status
+
+        if(status.isPresent() == status.equals(Status.TODO)) {
+            for (Task task : taskList) {
+                if(task.getStatus() == Status.TODO) {
+                    System.out.println(task);
+                }
             }
         }
 
