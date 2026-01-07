@@ -10,10 +10,8 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Task(int id,
-                String description) {
+    public Task(String description) {
 
-        this.id = id;
         this.description = description;
         createdAt = LocalDateTime.now();
     }
@@ -32,6 +30,10 @@ public class Task {
 
     public void setStatus(Status statusToUpdate) {
         this.status = statusToUpdate;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public void setDescription(String newDescription) {
