@@ -31,15 +31,15 @@ void main(String[] args) {
                 taskService.showTasks(Optional.empty());
             }
 
-            if (args[1] == "done") {
+            if (args[1].equals("done") ) {
                 taskService.showTasks(Optional.of(Status.DONE));
             }
 
-            if (args[1] == "todo") {
+            if (args[1].equals("todo")) {
                 taskService.showTasks(Optional.of(Status.TODO));
             }
 
-            if (args[1] == "in-progress") {
+            if (args[1].equals("in-progress")) {
                 taskService.showTasks(Optional.of(Status.IN_PROGRESS));
             }
 
