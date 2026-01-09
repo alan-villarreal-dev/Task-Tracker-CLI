@@ -31,7 +31,7 @@ public class TaskService {
         }
 
         // Verify if the task exists
-        if (taskList.contains(id)) {
+        if (!taskList.isEmpty() && id < taskList.size()) {
             Task taskToUpdate = taskList.get(id);
             taskToUpdate.setDescription(newDescription);
 
@@ -120,7 +120,7 @@ public class TaskService {
 
     }
 
-    public String printByStatus (Status status) {
+    public void printByStatus (Status status) {
         for (Task task : taskList) {
             if(task.getStatus().equals(status)) {
                 System.out.println(task);
