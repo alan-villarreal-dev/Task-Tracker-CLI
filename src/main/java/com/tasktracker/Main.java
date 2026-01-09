@@ -1,4 +1,5 @@
 import model.Status;
+import repository.JsonRepository;
 import service.TaskService;
 
 import java.util.Optional;
@@ -13,7 +14,7 @@ public class Main {
         }
 
         String taskToPerform = args[0].toLowerCase();
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(JsonRepository.loadTasks());
 
         switch (taskToPerform) {
             case "add" -> taskService.createTask(args[1]);
@@ -44,6 +45,7 @@ public class Main {
             default -> throw new IllegalStateException("Unexpected value: " + taskToPerform);
         }
 
+        JsonRepository.saveTasks(taskService.getTaskList());
     }
 
 }

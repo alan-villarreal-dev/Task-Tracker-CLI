@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class TaskService {
-    private List<Task> taskList = new ArrayList<>();
+    private List<Task> taskList;
+
+    public TaskService(List<Task> loadedTasks) {
+        this.taskList = loadedTasks;
+    }
 
     public void addTask(Task newTask) {
         taskList.add(newTask);
@@ -125,5 +129,9 @@ public class TaskService {
                 System.out.println(task);
             }
         }
+    }
+
+    public List<Task> getTaskList() {
+        return taskList;
     }
 }
