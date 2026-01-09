@@ -92,46 +92,39 @@ public class TaskService {
     }
 
     // Listing all tasks
-    public void showTasks(Optional<Status> status) {
+    public void showTasks(Optional<Status> filter) {
 
         if (taskList.isEmpty()) {
             System.out.println("Task list is empty, add a task please");
         }
 
         // Show all
-        if(status.isEmpty()) {
+        if(filter.isEmpty()) {
             for (Task task : taskList) {
                 System.out.println(task);
             }
         }
 
-        // Show tasks only with done status
-        if(status.isPresent() == status.equals(Status.DONE)) {
-            for (Task task : taskList) {
-                if(task.getStatus() == Status.DONE) {
-                    System.out.println(task);
-                }
+        // Print tasks depending on status
+        if (filter.isPresent()) {
+            // Get current status from optional object
+            Status status = filter.get();
+
+            switch (status) {
+                case Status.DONE -> printByStatus(Status.DONE);
+                case Status.IN_PROGRESS -> printByStatus(Status.IN_PROGRESS);
+                case Status.TODO -> printByStatus(Status.TODO);
             }
         }
 
-        // Show tasks with in progress status
-        if(status.isPresent() == status.equals(Status.IN_PROGRESS)) {
-            for (Task task : taskList) {
-                if(task.getStatus() == Status.IN_PROGRESS) {
-                    System.out.println(task);
-                }
+
+    }
+
+    public String printByStatus (Status status) {
+        for (Task task : taskList) {
+            if(task.getStatus().equals(status)) {
+                System.out.println(task);
             }
         }
-
-        // Show tasks with todo status
-
-        if(status.isPresent() == status.equals(Status.TODO)) {
-            for (Task task : taskList) {
-                if(task.getStatus() == Status.TODO) {
-                    System.out.println(task);
-                }
-            }
-        }
-
     }
 }
