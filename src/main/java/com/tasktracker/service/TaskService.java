@@ -14,7 +14,6 @@ public class TaskService {
         System.out.println("Task added successfully (ID: " + taskList.size());
     }
 
-
     // Create a task and add it to the list
     public void createTask(String description) {
         Task taskToCreate = new Task(description);

@@ -12,22 +12,15 @@ public class Main {
             System.exit(0);
         }
 
-
         String taskToPerform = args[0].toLowerCase();
-
         TaskService taskService = new TaskService();
 
         switch (taskToPerform) {
             case "add" -> taskService.createTask(args[1]);
-
             case "update" -> taskService.updateTask(Integer.parseInt(args[1]), args[2]);
-
             case "delete" -> taskService.deleteTask(Integer.parseInt(args[1]));
-
             case "mark-in-progress" ->  taskService.updateStatus("mark-in-progress", Integer.parseInt(args[1]));
-
             case "mark-done" ->  taskService.updateStatus("mark-done", Integer.parseInt(args[1]));
-
             case "list" -> {
 
                 if (args.length == 1) {
