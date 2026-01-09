@@ -10,11 +10,8 @@ public class TaskService {
     private List<Task> taskList = new ArrayList<>();
 
     public void addTask(Task newTask) {
-        if(taskList.add(newTask)){
-            System.out.println("Task added successfully (ID: " + taskList.size());
-        } else {
-            System.out.println("We couldn't add your new task :( ");
-        }
+        taskList.add(newTask);
+        System.out.println("Task added successfully (ID: " + taskList.size());
     }
 
 
@@ -57,7 +54,7 @@ public class TaskService {
     public void updateTasksId(List<Task> listTask) {
 
         // Constraint check: Invalid list
-        if (listTask.isEmpty() || listTask == null) {
+        if (listTask.isEmpty()) {
             System.out.println("Can't update task list, is empty!!");
         }
 
@@ -78,7 +75,7 @@ public class TaskService {
         Task taskToUpdate = taskList.get(id);
 
         // Mark task "in progress"
-        if (arg == "mark-in-progress") {
+        if (arg.equals("mark-in-progress")) {
             taskToUpdate.updateTimeStamp();
             taskToUpdate.setStatus(Status.IN_PROGRESS);
 
@@ -86,7 +83,7 @@ public class TaskService {
         }
 
         // Mark task "Done"
-        if (arg == "mark-done") {
+        if (arg.equals("mark-done")) {
             taskToUpdate.updateTimeStamp();
             taskToUpdate.setStatus(Status.DONE);
 
@@ -102,7 +99,7 @@ public class TaskService {
         }
 
         // Show all
-        if(!(status.isPresent())) {
+        if(status.isEmpty()) {
             for (Task task : taskList) {
                 System.out.println(task);
             }
