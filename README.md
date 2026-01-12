@@ -15,6 +15,9 @@ Java Command Linke Interface application to track tasks, manage their statuses a
 >
 > ***Dependencies:*** GSON Library added to handle serialization and deserialization of task objects.
 
+### Missing Features
+Add unit testings to verify code reliability using ***JUnit***
+
 ## Prerequisites
 
 - ***Java SDK:*** 24 or higher recommended
