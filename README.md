@@ -73,16 +73,24 @@ java -jar target/task-tracker-cli.jar list in-progress
 
 ## ***Project Structure*** 
 
+<pre>
 Task-Tracker-CLI/
 ├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/tasktracker/
-│   │           ├── Main.java        # Entry point & CLI logic
-│   │           ├── Task.java        # Task Model (Record/Class)
-│   │           └── TaskManager.java # Logic for File I/O and CRUD
-├── tasks.json                       # Data storage (auto-generated)
-└── pom.xml                          # Maven configuration
+│   └── main/
+│       └── java/
+│           └── com/
+│               └── tasktracker/
+│                   ├── Main.java             # Entry point (CLI argument parsing)
+│                   ├── model/
+│                   │   └── Task.java         # Task data structure
+│                   ├── service/
+│                   │   └── TaskService.java  # Business logic & Task orchestration
+│                   └── repository/
+│                       └── JsonRepository.java  # Logic for JSON serialization
+├── pom.xml                                   # Maven project configuration
+├── README.md                                 # Project documentation
+└── tasks.json                                # Local database file
+</pre>
 
 # License
 This project is licensed under the MIT License - see the LICENSE file for details.
