@@ -1,6 +1,7 @@
 /out/production/Task-Tracker-CLI/repository/JsonRepository.class
-/com/tasktracker/repository/JsonRepository.java
+/src/main/java/com/tasktracker/repository/JsonRepository.java
 /out/production/Task-Tracker-CLI/Main.class
 /out/production/Task-Tracker-CLI/model/Status.class
 /out/production/Task-Tracker-CLI/model/Task.class
 /out/production/Task-Tracker-CLI/service/TaskService.class
+/target
