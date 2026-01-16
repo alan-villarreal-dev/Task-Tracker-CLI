@@ -40,6 +40,7 @@ public class Task {
         this.description = newDescription;
     }
 
+    public String getDescription() {return description;}
     @Override
     public String toString() {
         return "Task{" +
