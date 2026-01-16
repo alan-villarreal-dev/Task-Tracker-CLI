@@ -98,8 +98,18 @@ public class TaskServiceTest {
 
     @Test
     void shouldReturnEmptyListWhenNoTasksMatchStatus() {
+        // Arrange: add tasks but none of them contains DONE status
         taskService.createTask("Test task 1.1");
         taskService.createTask("Test task 1.2");
+
+        // Act: Filter by state non-existent in the list
+        List<Task> result = taskService.getTasksByStatus(Status.DONE);
+
+        // Assert: Verify that list is empty and not null
+        assertAll("Testing empty list",
+                () -> assertNotNull(result, "Method should never return null."),
+                () -> assertTrue(result.isEmpty(), "List must be empty."),
+                () -> assertEquals(0, result.size(), "Size must be 0"));
 
 
     }
