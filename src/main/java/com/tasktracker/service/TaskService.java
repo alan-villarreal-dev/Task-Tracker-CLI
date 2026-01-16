@@ -4,6 +4,7 @@ import model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class TaskService {
@@ -20,35 +21,39 @@ public class TaskService {
 
     // Create a task and add it to the list
     public void createTask(String description) {
-        Task taskToCreate = new Task(description);
-        taskToCreate.setId(taskList.size() + 1);
-        taskToCreate.setStatus(Status.TODO);
-        addTask(taskToCreate);
+        if (description == null || description.isEmpty()) {
+            throw new IllegalArgumentException("Description value cannot be empty.");
+        } else {
+            Task taskToCreate = new Task(description);
+            taskToCreate.setId(taskList.size() + 1);
+            taskToCreate.setStatus(Status.TODO);
+            addTask(taskToCreate);
+        }
+
     }
 
     public void updateTask(int id, String newDescription) {
 
-        // Task list empty
-        if (taskList.isEmpty()) {
-            System.out.println("Task list empty, please add one task.");
-        }
-
-        // Verify if the task exists
-        if (!taskList.isEmpty() && id < taskList.size()) {
-            Task taskToUpdate = taskList.get(id);
-            taskToUpdate.setDescription(newDescription);
-
-            // Update timeStamp
-            taskToUpdate.updateTimeStamp();
-
+        // Validate if id exists
+        if (taskList.stream()
+                .noneMatch(task -> task.getId() == id)){
+            throw new IllegalArgumentException("ID Cannot be updated because doesn't exist");
         } else {
-            System.out.println("Task with id [" + id + "] doesn't exist");
-        }
+            taskList.get(id).setDescription(newDescription);
 
-        System.out.println("Update for task [ " + id + "]" + " completed");
+            // Update timestamp
+            taskList.get(id).updateTimeStamp();
+
+        }
     }
 
     public void deleteTask(int id) {
+
+        // Constraint check: ID doesn't exists in list of tasks
+        if (taskList.stream()
+                .noneMatch(task -> task.getId() == id)){
+            throw new IllegalArgumentException("ID Doesn't exist");
+        }
         taskList.remove(id);
         updateTasksId(taskList);
     }
@@ -69,69 +74,54 @@ public class TaskService {
         }
     }
 
-    public void updateStatus(String arg, int id) {
-        if (arg.isEmpty()) {
-            System.out.println("I can't update the status, your argument is empty");
-        }
-
-        // Retrive task from list
-        Task taskToUpdate = taskList.get(id);
-
-        // Mark task "in progress"
-        if (arg.equals("mark-in-progress")) {
-            taskToUpdate.updateTimeStamp();
-            taskToUpdate.setStatus(Status.IN_PROGRESS);
-
-            System.out.println("Task status updated to: 'In progress'");
-        }
-
-        // Mark task "Done"
-        if (arg.equals("mark-done")) {
-            taskToUpdate.updateTimeStamp();
-            taskToUpdate.setStatus(Status.DONE);
-
-            System.out.println("Task status updated to: 'Done':");
-        }
-    }
-
-    // Listing all tasks
-    public void showTasks(Optional<Status> filter) {
+    public List<Task> getTasksByStatus (Status status) {
 
         if (taskList.isEmpty()) {
-            System.out.println("Task list is empty, add a task please");
+            return taskList;
+        } else {
+            return taskList.stream()
+                    .filter(t -> t.getStatus() == status) // Filter by status
+                    .toList();// Filter by state
         }
 
-        // Show all
-        if(filter.isEmpty()) {
-            for (Task task : taskList) {
-                System.out.println(task);
-            }
-        }
-
-        // Print tasks depending on status
-        if (filter.isPresent()) {
-            // Get current status from optional object
-            Status status = filter.get();
-
-            switch (status) {
-                case Status.DONE -> printByStatus(Status.DONE);
-                case Status.IN_PROGRESS -> printByStatus(Status.IN_PROGRESS);
-                case Status.TODO -> printByStatus(Status.TODO);
-            }
-        }
-
-
-    }
-
-    public void printByStatus (Status status) {
-        for (Task task : taskList) {
-            if(task.getStatus().equals(status)) {
-                System.out.println(task);
-            }
-        }
     }
 
     public List<Task> getTaskList() {
         return taskList;
+    }
+
+    public boolean taskExists(int id) {
+
+        // Any match of a task in list
+        return taskList.stream()
+                .anyMatch(task -> task.getId() == id);
+
+    }
+
+    public Task getTask(int id) {
+        if (taskExists(id)) {
+            return taskList.get(id);
+        } else {
+            throw new NoSuchElementException("Task not found");
+        }
+    }
+
+    public void updateStatusOfTask(int id, Status status) {
+        if (taskExists(id)) {
+            taskList.get(id).setStatus(status);
+        } else {
+            throw new NoSuchElementException("Task not found, couldn't update the status.");
+        }
+    }
+
+    public void printTasksByStatus(Optional<Status> status) {
+
+        // Print all elements if no status provided
+        if (status.isEmpty()) {
+            System.out.println(getTaskList());
+        } else {
+            System.out.println(getTasksByStatus(status.get()));
+        }
+
     }
 }
